@@ -6,8 +6,8 @@ public class Main {
 		System.out.println("Hello Git!!");
 		
 		int a=10;
-		int b=20;
-		System.out.println(a+b);
+		String test="유병승";
+		System.out.println(a+test);
 
 	}
 
