@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>나의 첫 서버페이지!!</title>
+</head>
+<body>
+	<h1>내가 만든 첫 서버 페이지!!</h1>
+	<h2>우와 신기하다!!</h2>
+	<a href="first.do">내가만든 서블릿 요청하기</a>
+	<h3>post방식으로 요청하기</h3>
+	<form action="first.do" method="post">
+		<input type="submit" value="전송">
+	</form>
+	
+	<h2>어노테이션방식으로 연결된 서블릿 실행하기</h2>
+	<a href="anno.do">get방식요청하기</a>
+	
+	<form action="anno.do" method="post">
+		<input type="submit" value="annoServlet요청">
+	</form>
+	
+	<h2>서블릿 라이프사이클 확인</h2>
+	<a href="life.do">라이프사이클확인하기</a>
+	
+	<h2>서블릿 주소 맵핑</h2>
+	<ul>
+		<li>tomcat에서 사용하는 맵핑주소는 중복되면 안된다!</li>
+		<li>
+			주소는 여러계층으로 설정할 수 있다
+			<a href="admin/first.do">admin페이지호출</a>
+		</li>
+		<li>
+			페이지에서 주소설정할 때 상대와 절대로 설정할 수 있음 <br>
+			1. 절대 : 주소설정속성에 /로 시작하면 절대주소
+				-> 주소값이 localhost:9090에서 시작
+			2. 상대 : 주소명으로 시작하면 상대주소
+				-> 주소값이 페이지가 있는 폴더에서 시작
+				예) localhost:9090/프로젝트명/현재폴더명/주소...<br>
+		</li>
+	</ul>
+	<h3>
+		<a href="/firstwebproject/first.do">절대주소로 요청</a>
+	</h3>
+	<h3>
+		<a href="/first.do">상대주소로 요청</a>
+	</h3>
+	
+	
+</body>
+</html>
