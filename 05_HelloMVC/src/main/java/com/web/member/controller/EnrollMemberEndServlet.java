@@ -8,13 +8,14 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import com.web.common.AESEncrypt;
 import com.web.member.model.service.MemberService;
 import com.web.member.model.vo.Member;
 
 /**
  * Servlet implementation class EnrollMemberEndServlet
  */
-@WebServlet("/member/enrollMemberEnd.do")
+@WebServlet(name="enrollMemberEnd",urlPatterns="/member/enrollMemberEnd.do")
 public class EnrollMemberEndServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
        
@@ -38,6 +39,14 @@ public class EnrollMemberEndServlet extends HttpServlet {
 		String userName=request.getParameter("userName");
 		int age=Integer.parseInt(request.getParameter("age"));
 		String email=request.getParameter("email");
+//		전달된 email암호화처리하기
+		try {
+			email=AESEncrypt.encryptData(email);			
+		}catch(Exception e) {
+			e.printStackTrace();
+		}
+		
+		
 		String phone=request.getParameter("phone");
 		String address=request.getParameter("address");
 		char gender=request.getParameter("gender").charAt(0);

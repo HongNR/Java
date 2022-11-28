@@ -27,4 +27,10 @@ public class MemberService {
 		close(conn);
 		return result;
 	}
+	public Member searchMemberId(String userId) {
+		Connection conn=getConnection();
+		Member m=dao.searchMemberId(conn,userId);
+		close(conn);
+		return m;
+	}
 }

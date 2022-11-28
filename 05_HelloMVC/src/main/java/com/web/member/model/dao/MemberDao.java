@@ -71,6 +71,28 @@ public class MemberDao {
 		}
 		return result;
 	}
+	public Member searchMemberId(Connection conn, String userId) {
+		PreparedStatement pstmt=null;
+		ResultSet rs=null;
+		Member m=null;
+		try {
+			pstmt=conn.prepareStatement(sql.getProperty("searchMemberId"));
+			pstmt.setString(1, userId);
+			
+			rs=pstmt.executeQuery();
+			if(rs.next()) {
+				m=getMember(rs);
+			}
+		}catch(SQLException e) {
+			e.printStackTrace();
+		}finally {
+			close(rs);
+			close(pstmt);
+		}return m;
+	}
+	
+	
+	
 	
 	private Member getMember(ResultSet rs) throws SQLException{
 		return Member.builder()

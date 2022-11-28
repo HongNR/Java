@@ -4,14 +4,37 @@
 <%@ include file="/views/common/header.jsp" %>
 	<section id=enroll-container>
 	<h2>회원 가입 정보 입력</h2>
-        <form action="<%=request.getContextPath()%>/member/enrollMemberEnd.do" method="post" onsubmit="" >
+        <form name="enrollMemberFrm" action="<%=request.getContextPath()%>/member/enrollMemberEnd.do" 
+        method="post" onsubmit="return fn_invalidate();" >
         <table>
 			<tr>
 				<th>아이디</th>
 				<td>
 					<input type="text" placeholder="4글자이상" name="userId" id="userId_" >
-					<input type="button" name="idCheck" value="중복확인">
+					<input type="button" onclick="fn_idduplicate();" name="idCheck" value="중복확인">
 				</td>
+				<script>
+					const fn_idduplicate=()=>{
+						const userId=$("#userId_").val();
+						//console.log(userId);
+						if(userId.trim().length<4){
+							alert('아이디는 4글자 이상 입력해야합니다!');
+							$("#userId_").val('');
+							$("#userId_").focus();
+
+						}else{
+							<%-- open("<%=request.getContextPath()%>/member/idDuplicate.do?userId="+userId,"_blank","width=300,height=300"); --%>							
+							const title="idDuplicateFrm";
+							open("",title,"width=300,height=300");
+							//console.log(duplicateIdFrm);
+							duplicateIdFrm.userId.value=userId;
+							duplicateIdFrm.method="post";
+							duplicateIdFrm.action="<%=request.getContextPath()%>/member/idDuplicate.do";
+							duplicateIdFrm.target=title;
+							duplicateIdFrm.submit();
+						}
+					}
+				</script>
 			</tr>
 			<tr>
 				<th>패스워드</th>
@@ -22,8 +45,8 @@
 			<tr>
 				<th>패스워드확인</th>
 				<td>	
-					<input type="password" id="password_2" onchange="pwd();"><br>
-					<span id="pwdresult"></span>
+					<input type="password" id="password_2"><br>
+					<span id="passwordcheck"></span>
 				</td>
 			</tr>  
 			<tr>
@@ -79,6 +102,10 @@
 		<input type="submit" value="가입" >
 		<input type="reset" value="취소">
         </form>
+        <form name="duplicateIdFrm">
+			<!--hidden이라 안 보이지만 데이터를 보내기 위해 form태그 안에 묶음-->
+			<input type="hidden" name="userId">
+		</form>
     </section>
      <script>
    //제이쿼리
@@ -93,17 +120,23 @@
            }
         });
      })
-// 		const pwd=()=>{
-//            if(document.querySelector("#password_").value!=''&&document.querySelector("#password_2").value!=''){
-//               if(document.querySelector("#password_").value==document.querySelector("#password_2").value){
-//                   document.querySelector("span#pwdresult").innerHTML="비밀번호가 일치합니다";
-//                    document.querySelector("span#pwdresult").style.color='green'; 
-//               }else{
-//                   document.querySelector("span#pwdresult").innerHTML="비밀번호가 일치하지 않습니다.";
-//                    document.querySelector("span#pwdresult").style.color='red'; 
-//               }
-//           }
-//        } 
+		const fn_invalidate=()=>{
+			//아이디가 4글자 이상입력
+			const userId=$("#userId_").val().trim();
+			//패스워드가 8글자 이상입력
+			const password=$("#password_").val().trim();
+			if(userId.length<4){
+				alert("아이디는 4글자 이상 입력하세요");
+				return false;
+			}
+			const passwordReg=/^(?=.*[A-Za-z])(?=.*\d)(?=.*[!@#$%^&*()])[A-Za-z\d!@#$%^&*()]{8,}$/;
+    		console.log(!passwordReg.test(password));
+			if(password.length<8){
+				alert("패스워드는 8글자 이상 입력하세요");
+				return false;
+			}
+			
+		}
    </script>
 
 <!-- 푸터 -->

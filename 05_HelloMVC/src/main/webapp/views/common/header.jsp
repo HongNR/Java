@@ -65,7 +65,8 @@
 					</tr>
 					<tr>
 						<td>
-							<input type="button" value="내 정보보기">
+							<input type="button" value="내 정보보기"
+							onclick="location.assign('<%=request.getContextPath()%>/member/memberView.do?id=<%=loginMember.getUserId()%>');">
 						</td>
 						<td>
 							<input type="button" value="로그아웃"
