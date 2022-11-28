@@ -1,10 +1,12 @@
 package com.web.member.model.service;
 
+import static com.web.common.JDBCTemplate.*;
+import static com.web.common.JDBCTemplate.getConnection;
+
 import java.sql.Connection;
 
 import com.web.member.model.dao.MemberDao;
 import com.web.member.model.vo.Member;
-import static com.web.common.JDBCTemplate.*;
 
 public class MemberService {
 	
@@ -15,5 +17,14 @@ public class MemberService {
 		Member m=dao.searchMember(conn,userId,password);
 		close(conn);
 		return m;
+	}
+	
+	public int insertMember(Member m) {
+		Connection conn=getConnection();
+		int result=dao.insertMember(conn,m);
+		if(result>0) commit(conn);
+		else rollback(conn);
+		close(conn);
+		return result;
 	}
 }
