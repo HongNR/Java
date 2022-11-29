@@ -25,11 +25,10 @@
 					<th>아이디</th>
 					<td>
 						<input type="text" name="userId" id="userId_" 
-						value="<%=m.getUserId() %>" readonly
-						>
+						value="<%=m.getUserId() %>" readonly>
 					</td>
 				</tr>
-				<tr>
+				<%-- <tr>
 					<th>패스워드</th>
 					<td>
 						<input type="password" name="password" id="password_"
@@ -42,7 +41,7 @@
 						<input type="password" id="password_2"><br>
 					</td>
 				</tr>  
-				<tr>
+				<tr> --%>
 					<th>이름</th>
 					<td>	
 					<input type="text"  name="userName" id="userName" required
@@ -61,7 +60,7 @@
 					<th>이메일</th>
 					<td>	
 						<input type="email" placeholder="abc@xyz.com" name="email" id="email"
-						value="<%=m.getEmail() %>"><br>
+						value="<%=m.getEmail() %>" maxlength="20"><br>
 					</td>
 				</tr>
 				<tr>
@@ -111,9 +110,29 @@
 					</td>
 				</tr>
 			</table>
-			<input type="button" value="정보수정"/>
-			<input type="button" value="탈퇴"/>
+			<input type="button" value="정보수정" onclick="fn_updateMember();"/>
+			<input type="button" value="탈퇴" onclick="fn_deleteMember();"/>
+			<input type="button" value="비밀번호 변경"
+			onclick="changePwd();">
 		</form>
 	</section>
+	<script>
+		const changePwd=()=>{
+			open("<%=request.getContextPath()%>/updatepwd.do","_blank","width=400, height=210,left=500 ,top=200");
+		}
+		const fn_updateMember=()=>{
+			/* form태그 안에 action 속성의 주소를 넣기  */
+			$("#memberFrm").attr("action","<%=request.getContextPath()%>/member/updateMember.do");
+			/* 액션값 제출하기 */
+			$("#memberFrm").submit();
+		}
+		const fn_deleteMember=()=>{
+			/* form태그 안에 action 속성의 주소를 넣기  */
+			$("#memberFrm").attr("action","<%=request.getContextPath()%>/member/deleteMember.do");
+			/* 액션값 제출하기 */
+			$("#memberFrm").submit();
+		}
+	</script>
+	
 
 <%@ include file="/views/common/footer.jsp" %>

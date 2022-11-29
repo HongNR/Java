@@ -91,6 +91,44 @@ public class MemberDao {
 		}return m;
 	}
 	
+	public int updateMember(Connection conn, Member m) {
+		PreparedStatement pstmt=null;
+		int result=0;
+		
+		try {
+			pstmt=conn.prepareStatement(sql.getProperty("updateMember"));
+			pstmt.setString(1, m.getUserName());
+			pstmt.setString(2, String.valueOf(m.getGender()));
+			pstmt.setInt(3, m.getAge());
+			pstmt.setString(4, m.getEmail());
+			pstmt.setString(5, m.getPhone());
+			pstmt.setString(6, m.getAddress());
+			pstmt.setString(7, String.join(",", m.getHobby()));
+			pstmt.setString(8, m.getUserId());
+			
+			result=pstmt.executeUpdate();
+			
+		}catch(SQLException e) {
+			e.printStackTrace();
+		}finally {
+			close(pstmt);
+		}return result;
+	}
+	
+	public int deleteMember(Connection conn, Member m) {
+		PreparedStatement pstmt=null;
+		int result=0;
+		try {
+			pstmt=conn.prepareStatement(sql.getProperty("deleteMember"));
+			pstmt.setString(1, m.getUserId());
+			result=pstmt.executeUpdate();
+			
+		}catch(SQLException e) {
+			e.printStackTrace();
+		}finally {
+			close(pstmt);
+		}return result;
+	}
 	
 	
 	
