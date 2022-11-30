@@ -10,7 +10,7 @@ import javax.servlet.http.HttpServletResponse;
 /**
  * Servlet implementation class UpdatePwdServlet
  */
-@WebServlet("/updatepwd.do")
+@WebServlet("/member/updatePassword.do")
 public class UpdatePwdServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
        
@@ -26,7 +26,8 @@ public class UpdatePwdServlet extends HttpServlet {
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		request.getRequestDispatcher("/views/member/updatePwd.jsp").forward(request, response);
+		//비밀번호 변경하는 페이지로 연결해주는 기능
+		request.getRequestDispatcher("/views/member/updatePassword.jsp").forward(request, response);
 	}
 
 	/**

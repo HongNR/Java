@@ -1,5 +1,11 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+<%-- <%@page import="com.web.member.model.vo.Member" %>
+<%
+	out.print(request.getParameter("userId"));
+	out.print(((Member)session.getAttribute("loginMember").getUserId());
+%> --%>
+    
 <!DOCTYPE html>
 <html>
 <head>
@@ -8,7 +14,8 @@
 </head>
 <body>
     <div id="updatePassword-container">
-		<form name="updatePwdFrm" action="<%=request.getContextPath()%>/updatePasswordEnd" method="post" >
+		<form name="updatePwdFrm" action="<%=request.getContextPath()%>/member/updatePasswordEnd" method="post" 
+		onsubmit="return passwordCheck();">
 			<table>
 				<tr>
 					<th>현재 비밀번호</th>
@@ -33,9 +40,24 @@
 					</td>
 				</tr>
 			</table>
-			
+			<!-- userId값도 form안에서 같이 넘어가야하기 때문에 아이디값도 같이 전송해주는 역할 -->
+			<input type="hidden" name="userId" value="<%=request.getParameter("userId")%>">
 		</form>
 	</div>
+	<script>
+		const passwordCheck=()=>{
+			const password=document.querySelector("[name=password_new]").value;
+			const passwordck=document.querySelector("#password_chk").value;
+			if(password.trim().length<8){
+				alert("비밀번호는 8글자 이상 작성해야합니다.");
+				return false;
+			}
+			if(password!=passwordck){
+				alert("비밀번호가 일치하지않습니다.");
+				return false;
+			}
+		}
+	</script>
 
     <style>
     div#updatePassword-container{

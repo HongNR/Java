@@ -135,6 +135,12 @@
 				alert("패스워드는 8글자 이상 입력하세요");
 				return false;
 			}
+			/* const passwordReg=/^(?=.*[A-Za-z])(?=.*\d)(?=.*[!@#$%^&*()])[A-Za-z\d!@#$%^&*()]{8,}$/;
+    		//console.log(!passwordReg.test(password));
+			if(!passwordReg.test(password)){
+				alert("패스워드는 8글자 이상 영문자,숫자, 특수기호 포함해야합니다 입력하세요");
+				return false;
+			} */
 			
 		}
    </script>

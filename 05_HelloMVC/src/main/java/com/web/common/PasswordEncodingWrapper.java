@@ -15,7 +15,7 @@ public class PasswordEncodingWrapper extends HttpServletRequestWrapper {
 	
 	@Override
 	public String getParameter(String name) {
-		if(name.equals("password")) {
+		if(name.contains("password")) {
 			//데이터를 단방향 암호화해서 반환하기
 //			String ori=super.getParameter(name);
 //			System.out.println("암호화 전 : "+ori);

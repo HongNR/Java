@@ -11,22 +11,21 @@ import javax.servlet.ServletResponse;
 import javax.servlet.annotation.WebFilter;
 import javax.servlet.http.HttpFilter;
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 
-import com.web.common.PasswordEncodingWrapper;
+import com.web.common.exception.LoginCheckException;
+import com.web.member.model.vo.Member;
 
 /**
- * Servlet Filter implementation class EncryptFilter
+ * Servlet Filter implementation class AdminCheckFilter
  */
-@WebFilter(servletNames={
-		"enrollMemberEnd"//이 서블릿에서만 지금 필터를 적용!
-		,"login" ,"updatePassword"
-})
-public class EncryptFilter extends HttpFilter implements Filter {
+@WebFilter("/admin/*")
+public class AdminCheckFilter extends HttpFilter implements Filter {
        
     /**
      * @see HttpFilter#HttpFilter()
      */
-    public EncryptFilter() {
+    public AdminCheckFilter() {
         super();
         // TODO Auto-generated constructor stub
     }
@@ -44,10 +43,22 @@ public class EncryptFilter extends HttpFilter implements Filter {
 	public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain) throws IOException, ServletException {
 		// TODO Auto-generated method stub
 		// place your code here
-		PasswordEncodingWrapper pew=new PasswordEncodingWrapper((HttpServletRequest)request);
+		HttpSession session=((HttpServletRequest)request).getSession(false);
+		Member loginMember=(Member)session.getAttribute("loginMember");
+		if(loginMember!=null&&loginMember.getUserId().equals("admin")) {
+			chain.doFilter(request, response);//값을 넘기기
+		}else {
+//			request.setAttribute("msg", "접근 할 권한이 없습니다! :<");
+//			request.setAttribute("loc", "/");
+//			request.getRequestDispatcher("/views/common/msg.jsp").forward(request, response);
+//			throw new IllegalAccessError("권한 없는 접근입니다.");
+			throw new LoginCheckException("권한 없는 접근입니다.");
+		}
 		
+		
+		
+
 		// pass the request along the filter chain
-		chain.doFilter(pew, response);
 	}
 
 	/**

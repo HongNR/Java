@@ -48,6 +48,8 @@ public class UpdateMemberServlet extends HttpServlet {
 		if(result>0) {
 			msg="회원정보 수정 완료!";
 			loc="/";
+			//session에 저장된 데이터를 변경해줘야한다.
+			request.getSession().setAttribute("loginMember", m);
 		}else {
 			msg="회원정보 수정 실패";
 			loc="/member/memberView.do?id="+m.getUserId();//queryString으로 id넘겨줘야함

@@ -82,6 +82,12 @@
 					<li id="notice"><a href="">공지사항</a></li>
 					<li id="board"><a href="">게시판</a></li>
 					<li id="gallary"><a href="">갤러리</a></li>
+					<!-- 아이디가 admin이면 회원관리 메뉴 보이기 -->
+					<%if(loginMember!=null&&loginMember.getUserId().equals("admin")){%>					
+						<li id="memberManage">
+							<a href="<%=request.getContextPath() %>/admin/memberList.do">회원관리</a>
+						</li>
+					<%} %>
 				</ul>
 			</nav>
 		</header>
