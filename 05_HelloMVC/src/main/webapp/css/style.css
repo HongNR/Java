@@ -1,6 +1,6 @@
 @charset "UTF-8";
 	body{
-		font-family:"THE크리스마스";
+		font-family:"휴먼모음T";
 	}
 	
 	div,section,header,footer{padding:10px;}
@@ -59,7 +59,7 @@
 		height: 2em;
 		float: left; 
 		text-align: center; 
-		font-family: "THE크리스마스", sans-serif;
+		font-family: "휴먼모음T", sans-serif;
 		border-left: 1px #00bcd4 solid;
 		background-color: #5283de; 
 	}
