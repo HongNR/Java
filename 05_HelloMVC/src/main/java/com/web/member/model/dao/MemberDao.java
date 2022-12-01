@@ -163,7 +163,8 @@ public class MemberDao {
 				.email(rs.getString("email"))
 				.phone(rs.getString("phone"))
 				.address(rs.getString("address"))
-				.hobby(rs.getString("hobby").split(","))
+				.hobby(rs.getString("hobby")
+						!=null?rs.getString("hobby").split(","):new String[] {})
 				.enrollDate(rs.getDate("enrolldate"))
 				.build();
 	}
