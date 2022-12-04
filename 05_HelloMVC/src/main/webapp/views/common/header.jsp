@@ -79,7 +79,11 @@
 			<nav>
 				<ul class="main-nav">
 					<li class="home"><a href="">Home</a></li>
-					<li id="notice"><a href="">공지사항</a></li>
+					<%if(loginMember==null){ %>
+						<li id="notice"><a href="" onclick="alert();">공지사항</a></li>
+					<%} else{%>
+						<li id="notice"><a href="<%=request.getContextPath()%>/notice/noticeList.do">공지사항</a></li>					
+					<%} %>
 					<li id="board"><a href="">게시판</a></li>
 					<li id="gallary"><a href="">갤러리</a></li>
 					<!-- 아이디가 admin이면 회원관리 메뉴 보이기 -->
@@ -91,3 +95,9 @@
 				</ul>
 			</nav>
 		</header>
+		<script>
+			const alert=()=>{
+				alert("로그인 한 사용자만 접근 가능합니다.");
+				return false;
+			}
+		</script>

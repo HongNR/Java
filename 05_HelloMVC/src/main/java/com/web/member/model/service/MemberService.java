@@ -1,12 +1,16 @@
 package com.web.member.model.service;
 
-import static com.web.common.JDBCTemplate.*;
+import static com.web.common.JDBCTemplate.close;
+import static com.web.common.JDBCTemplate.commit;
 import static com.web.common.JDBCTemplate.getConnection;
+import static com.web.common.JDBCTemplate.rollback;
 
 import java.sql.Connection;
+import java.util.List;
 
 import com.web.member.model.dao.MemberDao;
 import com.web.member.model.vo.Member;
+import com.web.notice.model.vo.Notice;
 
 public class MemberService {
 	
@@ -60,4 +64,5 @@ public class MemberService {
 		close(conn);
 		return result;
 	}
+	
 }
