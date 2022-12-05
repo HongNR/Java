@@ -70,6 +70,44 @@ public class NoticeDao {
 		}return result;
 	}
 	
+	//공지사항 글작성한 것 DB저장
+	public int insertNotice(Connection conn, Notice n) {
+		PreparedStatement pstmt=null;
+		int result=0;
+		
+		try {
+			pstmt=conn.prepareStatement(sql.getProperty("insertNotice"));
+			pstmt.setString(1, n.getNoticeTitle());
+			pstmt.setString(2, n.getNoticeWriter());
+			pstmt.setString(3, n.getNoticeContent());
+			pstmt.setString(4, n.getFilePath());
+			result=pstmt.executeUpdate();
+			
+		}catch(SQLException e) {
+			e.printStackTrace();
+		}finally {
+			close(pstmt);
+		}return result;
+	}
+	//공지사항 제목 클릭 시 글번호로 게시글 가져오는 로직
+	public Notice selectNotice(Connection conn, int no) {
+		PreparedStatement pstmt=null;
+		ResultSet rs=null;
+		Notice n=null;
+		try {
+			pstmt=conn.prepareStatement(sql.getProperty("selectNotice"));
+			pstmt.setInt(1, no);
+			rs=pstmt.executeQuery();
+			if(rs.next()) n=getNotice(rs);
+			
+		}catch(SQLException e){
+			e.printStackTrace();
+		}finally {
+			close(rs);
+			close(pstmt);
+		}return n;
+	}
+	
 	
 	private Notice getNotice(ResultSet rs) throws SQLException{
 		return Notice.builder()

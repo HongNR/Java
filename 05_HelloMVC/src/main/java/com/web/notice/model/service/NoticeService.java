@@ -24,4 +24,18 @@ public class NoticeService {
 		close(conn);
 		return result;
 	}
+	
+	public int insertNotice(Notice n) {
+		Connection conn=getConnection();
+		int result=dao.insertNotice(conn,n);
+		close(conn);
+		return result;
+	}
+	
+	public Notice selectNotice(int no) {
+		Connection conn=getConnection();
+		Notice n=dao.selectNotice(conn,no);
+		close(conn);
+		return n;
+	}
 }

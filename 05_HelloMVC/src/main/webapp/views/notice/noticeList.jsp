@@ -36,7 +36,9 @@
 				
 				<tr>
 					<td><%=n.getNoticeNo() %></td>
-					<td><%=n.getNoticeTitle() %></td>
+					<td>
+						<a href="<%=request.getContextPath()%>/notice/noticeView.do?noticeNo=<%=n.getNoticeNo()%>"><%=n.getNoticeTitle() %></a>
+					</td>
 					<td><%=n.getNoticeWriter() %></td>
 					<td>
 						<%if(n.getFilePath()!=null) {%>

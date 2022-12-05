@@ -12,6 +12,8 @@ import org.apache.tomcat.util.http.fileupload.servlet.ServletFileUpload;
 
 import com.oreilly.servlet.MultipartRequest;
 import com.oreilly.servlet.multipart.DefaultFileRenamePolicy;
+import com.web.notice.model.service.NoticeService;
+import com.web.notice.model.vo.Notice;
 
 /**
  * Servlet implementation class NoticeWriteEndServlet
@@ -62,6 +64,39 @@ public class NoticeWriteEndServlet extends HttpServlet {
 			
 			//매개변수 있는 생성자로 MultipartRequest클래스를 생성
 			MultipartRequest mr=new MultipartRequest(request,path,maxSize,encoding,dfr);
+			
+			//클라이언트가 보낸 데이터를 DB에 저장하는 기능
+			//파일을 저장하면서 재정의된 파일명을 저장해야한다.
+			String title=mr.getParameter("noticeTitle");
+			String writer=mr.getParameter("noticeWriter");
+			String content=mr.getParameter("noticeContent");
+			//파일이름 : 리네임된 파일이름!
+			String fileName=mr.getFilesystemName("upFile");//name=upFile인 값 가져옴
+			String oriName=mr.getOriginalFileName("upFile");
+			
+			Notice n=Notice.builder()
+					.noticeTitle(title)
+					.noticeWriter(writer)
+					.noticeContent(content)
+					.filePath(fileName)
+					.build();
+			System.out.println(n);
+			System.out.println(oriName);
+			
+			int result=new NoticeService().insertNotice(n);
+			String msg="",loc="";
+			if(result>0) {
+				msg="공지사항 등록 성공!";
+				loc="/notice/noticeList.do";
+			}else {
+				msg="공지사항 등록 실패!";
+				loc="/notice/write.do";
+			}
+			request.setAttribute("msg", msg);
+			request.setAttribute("loc", loc);
+			
+			request.getRequestDispatcher("/views/common/msg.jsp").forward(request, response);
+			
 		}
 		
 		

@@ -10,7 +10,7 @@
     </style>
 <section id="notice-container">
     <form action="<%=request.getContextPath() %>/notice/writeEnd.do"
-     method="post" enctype="multipart/form-data">
+     method="post" enctype="multipart/form-data"><!-- ★ 파일 업로드 : enctype 설정하기!!!!!!!!  -->
     	<h2>공지사항 작성</h2>
         <table id="tbl-notice">
         <tr>
@@ -32,7 +32,7 @@
         </tr>
         <tr>
             <th>내 용</th>
-            <td><textarea cols="47" rows="5"></textarea></td>
+            <td><textarea cols="47" rows="5" name="noticeContent"></textarea></td>
         </tr>
         <tr>
             <th colspan="2">
