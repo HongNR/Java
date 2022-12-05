@@ -92,17 +92,16 @@
 			</div>
 		</div>
 		<table id="tbl-comment">
-			<tr>
+			<tr class="level1">
 				<td>
-					우와앙
+					<sub class="comment-writer"></sub>
+					<sub class="comment-date"></sub>
+					<br>
 				</td>
 				<td>
-					우와앙
+					댓글(로그인한 사용자만), 삭제버튼만들기 (작성자, 관리자만삭제가능)
 				</td>
-				<td>
-					우와앙
-				</td>
-			</tr>
+			</tr>	
 		</table>
     </section>
     <script>
