@@ -1,6 +1,7 @@
 package com.web.board.controller;
 
 import java.io.IOException;
+import java.util.List;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -11,6 +12,7 @@ import javax.servlet.http.HttpServletResponse;
 
 import com.web.board.model.service.BoardService;
 import com.web.board.model.vo.Board;
+import com.web.board.model.vo.BoardComment;
 
 /**
  * Servlet implementation class BoardViewServlet
@@ -56,8 +58,12 @@ public class BoardViewServlet extends HttpServlet {
 			response.addCookie(c);
 		}
 		
+		
 		Board b=new BoardService().selectBoard(boardNo,readflag);
 		request.setAttribute("board", b);
+		
+		List<BoardComment> list=new BoardService().selectBoardComment(boardNo);
+		request.setAttribute("comments", list);
 		
 		request.getRequestDispatcher("/views/board/boardView.jsp").forward(request, response);
 	}

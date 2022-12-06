@@ -1,8 +1,9 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
-<%@ page import="com.web.board.model.vo.Board" %>
+<%@ page import="com.web.board.model.vo.Board,java.util.List,com.web.board.model.vo.BoardComment" %>
 <%
 	Board b=(Board)request.getAttribute("board");
+	List<BoardComment> comments=(List<BoardComment>)request.getAttribute("comments");
 %>
 <%@ include file="/views/common/header.jsp"%>
 <style>
@@ -91,17 +92,48 @@
 				</form>
 			</div>
 		</div>
+
 		<table id="tbl-comment">
-			<tr class="level1">
-				<td>
-					<sub class="comment-writer"></sub>
-					<sub class="comment-date"></sub>
-					<br>
-				</td>
-				<td>
-					댓글(로그인한 사용자만), 삭제버튼만들기 (작성자, 관리자만삭제가능)
-				</td>
-			</tr>	
+				<%if(!comments.isEmpty()){
+					for(BoardComment bc : comments){
+					if(bc.getBoardCommentLevel()==1){%>
+					<tr class="level1">
+						<td>
+							<sub class="comment-writer"><%=bc.getBoardCommentWriter() %></sub>
+							<sub class="comment-date"><%=bc.getBoardCommentDate() %></sub>
+							<br>
+							<%=bc.getBoardCommentContent() %>
+						</td>
+						<td>
+							<%if(loginMember!=null){ %>
+								<button class="btn-reply" value="<%=bc.getBoardCommentNo()%>">답글달기</button>
+							<%} %>
+							<%if(loginMember!=null&&
+								(loginMember.getUserId().equals("admin")||
+								loginMember.getUserId().equals(bc.getBoardCommentWriter()))){ %>
+								<button class="btn-delete" onclick="fn_deleteComment('<%=bc.getBoardCommentNo()%>')">삭제하기</button>				
+							<%} %>
+						</td>
+					</tr>	
+				<% } else{%>
+					<tr class="level2">
+						<td>
+							<sub><%=bc.getBoardCommentWriter() %></sub>
+							<sub><%=bc.getBoardCommentDate() %></sub>
+							<br>
+							<%=bc.getBoardCommentContent() %>
+						</td>
+						<td>
+							<%if(loginMember!=null&&
+								(loginMember.getUserId().equals("admin")||
+								loginMember.getUserId().equals(bc.getBoardCommentWriter()))){ %>
+								<button class="btn-delete" onclick="fn_deleteComment('<%=bc.getBoardCommentNo()%>')">삭제하기</button>				
+							<%} %>
+						</td>
+					</tr>
+				<%}
+				}//for문
+				}%>
 		</table>
     </section>
     <script>
@@ -111,7 +143,27 @@
     				alert("로그인 후 이용할 수 있습니다.");
     				$("#userId").focus();
     			}
-    		})
-    	})
+    		});
+    		$(".btn-reply").click(e=>{
+    			const tr=$("<tr>");
+    			const form=$(".comment-editor>form").clone();
+    			form.find("textarea").attr({"rows":"1"});
+    			form.find("input[name=level]").val("2");
+    			form.find("input[name=commentref]").val($(e.target).val());
+    			form.find("button").removeAttr("id").addClass("btn-insert2");
+    			const td=$("<td>").attr("colspan","2").append(form);
+    			tr.append(td);
+    			tr.find("td").css("display","none");
+    			tr.insertAfter($(e.target).parents("tr")).children("td").slideDown(800);
+    			$(e.target).off("click");
+    		});
+    	});
+    	const fn_deleteComment=(commentNo)=>{
+    		const result=confirm("댓글을 삭제하시겠습니까?");
+    		if(result==true){
+    			location.assign("<%=request.getContextPath()%>/board/commentDelete.do?boardNo=<%=b.getBoardNo()%>&commentNo="+commentNo);    			
+    		}
+    		
+    	}
     </script>
 <%@ include file="/views/common/footer.jsp"%>

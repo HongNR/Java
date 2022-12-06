@@ -118,8 +118,53 @@ public class BoardDao {
 		}return result;
 	}
 	
+	public List<BoardComment> selectBoardComment(Connection conn,int boardNo){
+		PreparedStatement pstmt=null;
+		ResultSet rs=null;
+		List<BoardComment> list=new ArrayList();
+		
+		try {
+			pstmt=conn.prepareStatement(sql.getProperty("selectBoardComment"));
+			pstmt.setInt(1, boardNo);
+			rs=pstmt.executeQuery();
+			while(rs.next()) {
+				list.add(getBoardComment(rs));
+			}
+			
+		}catch(SQLException e) {
+			e.printStackTrace();
+		}finally {
+			close(rs);
+			close(pstmt);
+		}return list;
+	}
+	
+	public int deleteBoardComment(Connection conn, int commentNo) {
+		PreparedStatement pstmt=null;
+		int result=0;
+		try {
+			pstmt=conn.prepareStatement(sql.getProperty("deleteBoardComment"));
+			pstmt.setInt(1, commentNo);
+			result=pstmt.executeUpdate();
+		}catch(SQLException e) {
+			e.printStackTrace();
+		}finally {
+			close(pstmt);
+		}return result;
+	}
 	
 	
+	private BoardComment getBoardComment(ResultSet rs) throws SQLException{
+		return BoardComment.builder()
+				.boardCommentNo(rs.getInt("board_comment_no"))
+				.boardCommentLevel(rs.getInt("board_comment_level"))
+				.boardCommentWriter(rs.getString("board_comment_writer"))
+				.boardCommentContent(rs.getString("board_comment_content"))
+				.boardRef(rs.getInt("board_ref"))
+				.boardCommentRef(rs.getInt("board_comment_ref"))
+				.boardCommentDate(rs.getDate("board_comment_date"))
+				.build();
+	}
 	private Board getBoard(ResultSet rs) throws SQLException{
 		return Board.builder()
 				.boardNo(rs.getInt("board_no"))
