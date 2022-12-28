@@ -1,5 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%
 	Member m=(Member)request.getAttribute("member");
 	//String[] hobbys=m.getHobby();
@@ -16,6 +17,7 @@
 	}
 %>
 <%@ include file="/views/common/header.jsp" %>
+<%-- <jsp:include page="/views/common/header.jsp"/> --%>
 
 	<section id=enroll-container>
 		<h2>회원 정보 수정</h2>
@@ -25,27 +27,13 @@
 					<th>아이디</th>
 					<td>
 						<input type="text" name="userId" id="userId_" 
-						value="<%=m.getUserId() %>" readonly>
+						value="${member.userId }" readonly>
 					</td>
 				</tr>
-				<%-- <tr>
-					<th>패스워드</th>
-					<td>
-						<input type="password" name="password" id="password_"
-						value="<%=m.getPassword() %>">
-					</td>
-				</tr>
-				<tr>
-					<th>패스워드확인</th>
-					<td>	
-						<input type="password" id="password_2"><br>
-					</td>
-				</tr>  
-				<tr> --%>
 					<th>이름</th>
 					<td>	
 					<input type="text"  name="userName" id="userName" required
-					value="<%=m.getUserName() %>"
+					value="${member.userName }"
 					><br>
 					</td>
 				</tr>
@@ -53,44 +41,48 @@
 					<th>나이</th>
 					<td>	
 					<input type="number" name="age" id="age"
-					value="<%=m.getAge() %>"><br>
+					value="${member.age }"><br>
 					</td>
 				</tr> 
 				<tr>
 					<th>이메일</th>
 					<td>	
 						<input type="email" placeholder="abc@xyz.com" name="email" id="email"
-						value="<%=m.getEmail() %>" maxlength="20"><br>
+						value="${member.email }" maxlength="20"><br>
 					</td>
 				</tr>
 				<tr>
 					<th>휴대폰</th>
 					<td>	
 						<input type="tel" placeholder="(-없이)01012345678" name="phone" id="phone" maxlength="11"
-						value="<%=m.getPhone() %>"><br>
+						value="${member.phone }"><br>
 					</td>
 				</tr>
 				<tr>
 					<th>주소</th>
 					<td>	
 						<input type="text" placeholder="" name="address" id="address" 
-						value="<%=m.getAddress() %>"><br>
+						value="${member.address } ${member.gender}"><br>
 					</td>
 				</tr>
 				<tr>
 					<th>성별 </th>
 					<td>
 						<!-- DB정보에 따라 분기처리할것 -->
-							<input type="radio" name="gender" id="gender0" value="M" 
-							<%if(m.getGender()=='M'){%>
+							<input type="radio" name="gender" id="gender0" value="M"
+							<c:if test="${member.gender.equals('M') }">
+<%-- 							<%if(m.getGender()=='M'){%> --%>
 								checked
-							<% }%>
+<%-- 							<% }%> --%>
+							</c:if> 
 							>
 							<label for="gender0">남</label>
 							<input type="radio" name="gender" id="gender1" value="F"
-							<%if(m.getGender()=='F'){%>
+							<c:if test="${member.gender.equals('F') }">
+<%-- 							<%if(m.getGender()=='F'){%> --%>
 								checked
-							<% }%>
+<%-- 							<% }%> --%>
+							</c:if>
 							>
 							<label for="gender1">여</label>
 						
@@ -119,22 +111,22 @@
 	<script>
 		const fn_updatePassword=()=>{
 			//새창으로 패스워드 수정페이지 연결
-			open("<%=request.getContextPath()%>/member/updatePassword.do?userId=<%=loginMember!=null?loginMember.getUserId():""%>"
+			open("${pageContext.request.contextPath}/member/updatePassword.do?userId=${loginMember!=null?loginMember.userId:""}"
 					,"_blank","width=400, height=210,left=500 ,top=200");
 		}
 		const fn_updateMember=()=>{
 			/* form태그 안에 action 속성의 주소를 넣기  */
-			$("#memberFrm").attr("action","<%=request.getContextPath()%>/member/updateMember.do");
+			$("#memberFrm").attr("action","${pageContext.request.contextPath}/member/updateMember.do");
 			/* 액션값 제출하기 */
 			$("#memberFrm").submit();
 		}
 		const fn_deleteMember=()=>{
 			/* form태그 안에 action 속성의 주소를 넣기  */
-			$("#memberFrm").attr("action","<%=request.getContextPath()%>/member/deleteMember.do");
+			$("#memberFrm").attr("action","${pageContext.request.contextPath}/member/deleteMember.do");
 			/* 액션값 제출하기 */
 			$("#memberFrm").submit();
 		}
 	</script>
 	
-
-<%@ include file="/views/common/footer.jsp" %>
+<jsp:include page="/views/common/footer.jsp"/>
+<%-- <%@ include file="/views/common/footer.jsp" %> --%>
