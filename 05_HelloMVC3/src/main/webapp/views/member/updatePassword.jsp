@@ -1,5 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%-- <%@page import="com.web.member.model.vo.Member" %>
 <%
 	out.print(request.getParameter("userId"));
@@ -14,7 +15,7 @@
 </head>
 <body>
     <div id="updatePassword-container">
-		<form name="updatePwdFrm" action="<%=request.getContextPath()%>/member/updatePasswordEnd" method="post" 
+		<form name="updatePwdFrm" action="${pageContext.request.contextPath }/member/updatePasswordEnd" method="post" 
 		onsubmit="return passwordCheck();">
 			<table>
 				<tr>
@@ -41,7 +42,7 @@
 				</tr>
 			</table>
 			<!-- userId값도 form안에서 같이 넘어가야하기 때문에 아이디값도 같이 전송해주는 역할 -->
-			<input type="hidden" name="userId" value="<%=request.getParameter("userId")%>">
+			<input type="hidden" name="userId" value="<c:out value="${userId }"/>">
 		</form>
 	</div>
 	<script>

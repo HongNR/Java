@@ -1,5 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ page import="java.util.List,com.web.board.model.vo.Board" %>
 <%
 	List<Board> boards=(List<Board>)request.getAttribute("boards");
@@ -28,10 +29,12 @@
 				<th>첨부파일</th>
 				<th>조회수</th>
 			</tr>
-			<%if(boards.isEmpty()){ %>
-			
-			<%}else {
-				for(Board b: boards){%>
+			<c:if test="${empty boards }">
+<%-- 			<%if(boards.isEmpty()){ %> --%>
+			</c:if>
+			<c:if test="${not empty boards }">
+			<%-- <%}else %> --%>
+			<%{for(Board b: boards){%>
 				<tr>
 				<td><%=b.getBoardNo() %></td>
 				<td>
@@ -50,11 +53,13 @@
 				</td>
 				<td><%=b.getBoardReadcount() %></td>
 			</tr>
-			<%}
-				}%>
+			<% }%>
+				<!-- }%> --> 
+			</c:if>
 		</table>
 		<div id="pageBar">
-			<%=request.getAttribute("pageBar") %>
+			${pageBar }
+			<%-- <%=request.getAttribute("pageBar") %> --%>
 		</div>
 	</section>
 <%@ include file="/views/common/footer.jsp"%>

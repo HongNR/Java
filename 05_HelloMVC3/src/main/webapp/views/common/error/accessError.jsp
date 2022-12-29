@@ -12,7 +12,7 @@
 	<script>
 		/* 3초 후에 이동 */
 		setTimeout(()=>{
-			location.replace("<%=request.getContextPath()%>");
+			location.replace("${pageContext.request.contextPath}");
 		},3000)
 	</script>
 
