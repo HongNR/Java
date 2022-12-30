@@ -5,7 +5,8 @@
 <%-- <%
 	List<Board> boards=(List<Board>)request.getAttribute("boards");
 %> --%>
-<%@ include file="/views/common/header.jsp"%>
+<%-- <%@ include file="/views/common/header.jsp"%> --%>
+<jsp:include page="/views/common/header.jsp"/>
 <style>
 	section#board-container{width:600px; margin:0 auto; text-align:center;}
 	section#board-container h2{margin:10px 0;}
