@@ -1,10 +1,11 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ page import="com.web.board.model.vo.Board,java.util.List,com.web.board.model.vo.BoardComment" %>
-<%
+<%-- <%
 	Board b=(Board)request.getAttribute("board");
 	List<BoardComment> comments=(List<BoardComment>)request.getAttribute("comments");
-%>
+%> --%>
 <%@ include file="/views/common/header.jsp"%>
 <style>
     section#board-container{width:600px; margin:0 auto; text-align:center;}
@@ -40,106 +41,126 @@
 		<table id="tbl-board">
 			<tr>
 				<th>글번호</th>
-				<td><%=b.getBoardNo()%></td>
+				<td><c:out value="${board.boardNo }"/></td>
 			</tr>
 			<tr>
 				<th>제 목</th>
-				<td><%=b.getBoardTitle() %></td>
+				<td><c:out value="${board.boardTitle }"/></td>
 			</tr>
 			<tr>
 				<th>작성자</th>
-				<td><%=b.getBoardWriter() %></td>
+				<td><c:out value="${board.boardWriter }"/></td>
 			</tr>
 			<tr>
 				<th>조회수</th>
-				<td><%=b.getBoardReadcount() %></td>
+				<td><c:out value="${board.boardReadcount }"/></td>
 			</tr>
 			<tr>
 				<th>첨부파일</th>
 				<td>
-				 <%if(b.getBoardOriginalFilename()!=null){ %>
-				 	<img src="<%=request.getContextPath()%>/images/file.png" width="20">
-				 <%}else { %>
+				<c:if test="${board.boardOriginalFilename!=null }">
+<%-- 				 <%if(b.getBoardOriginalFilename()!=null){ %> --%>
+				 	<img src="${pageContext.request.contextPath }/images/file.png" width="20">
+				 </c:if>
+<%-- 				 <%}else { %> --%>
+				 <c:if test="${board.boardOriginalFilename==null }">
 				 	첨부파일 없음
-				 <%} %>
+			 	</c:if>
+				 <%-- <%} %> --%>
 				</td>
 			</tr>
 			<tr>
 				<th>내 용</th>
-				<td><%=b.getBoardContent() %></td>
+				<td><c:out value="${board.boardContent }"/></td>
 			</tr>
 			<%--글작성자/관리자인경우 수정삭제 가능 --%>
-			<% if(loginMember!=null
-					&&(loginMember.getUserId().equals("admin")
-						||loginMember.getUserId().equals(b.getBoardWriter()))){ %>
+			<c:if test="${loginMember!=null &&(loginMember.userId eq 'admin' || loginMember.userId eq board.boardWriter) }">
+<%-- 			<% if(loginMember!=null --%>
+ 					<!-- &&(loginMember.getUserId().equals("admin") -->
+<%-- 						||loginMember.getUserId().equals(b.getBoardWriter()))){ %> --%>
 				<tr>
 					<th colspan="2">
 						<button >수정하기</button>
 						<button >삭제하기</button>
 					</th>
 				</tr>
-			<%} %>
+			</c:if>
+<%-- 			<%} %> --%>
 		</table>
 		<div id="comment-container">
 			<div class="comment-editor">
-				<form action="<%=request.getContextPath()%>/board/commentWrite.do" method="post">
+				<form action="${pageContext.request.contextPath }/board/commentWrite.do" method="post">
 					<textarea name="content" cols="55" rows="3"></textarea>
-					<input type="hidden" name="boardref" value="<%=b.getBoardNo()%>"/>
+					<input type="hidden" name="boardref" value="${board.boardNo}"/>
 					<input type="hidden" name="level" value="1"/>
 					<input type="hidden" name="commentref" value="0"/>
-					<input type="hidden" name="commentWriter" value="<%=loginMember!=null?loginMember.getUserId():""%>"/>
+					<input type="hidden" name="commentWriter" value="${loginMember!=null?loginMember.userId:''}"/>
 					<button type="submit" id="btn-insert">등록</button>
 				</form>
 			</div>
 		</div>
 
 		<table id="tbl-comment">
-				<%if(!comments.isEmpty()){
+			<c:if test="${not empty comments}">
+				<c:forEach var="bc" items="${comments }">
+					<c:if test="${bc.boardCommentLevel == 1 }">
+				<%-- <%if(!comments.isEmpty()){
 					for(BoardComment bc : comments){
-					if(bc.getBoardCommentLevel()==1){%>
+					if(bc.getBoardCommentLevel()==1){%> --%>
 					<tr class="level1">
 						<td>
-							<sub class="comment-writer"><%=bc.getBoardCommentWriter() %></sub>
-							<sub class="comment-date"><%=bc.getBoardCommentDate() %></sub>
+							<sub class="comment-writer">${bc.boardCommentWriter}</sub>
+							<sub class="comment-date">${bc.boardCommentDate}</sub>
 							<br>
-							<%=bc.getBoardCommentContent() %>
+							${bc.boardCommentContent }
 						</td>
 						<td>
-							<%if(loginMember!=null){ %>
-								<button class="btn-reply" value="<%=bc.getBoardCommentNo()%>">답글달기</button>
-							<%} %>
-							<%if(loginMember!=null&&
+							<c:if test="${loginMember!=null }">
+							<%-- <%if(loginMember!=null){ %> --%>
+								<button class="btn-reply" value="${bc.boardCommentNo}">답글달기</button>
+							</c:if>
+							<%-- <%} %> --%>
+							<c:if test="${loginMember!=null &&(loginMember.userId eq 'admin' || loginMember.userId eq board.boardWriter) }">
+							<%-- <%if(loginMember!=null&&
 								(loginMember.getUserId().equals("admin")||
-								loginMember.getUserId().equals(bc.getBoardCommentWriter()))){ %>
-								<button class="btn-delete" onclick="fn_deleteComment('<%=bc.getBoardCommentNo()%>')">삭제하기</button>				
-							<%} %>
+								loginMember.getUserId().equals(bc.getBoardCommentWriter()))){ %> --%>
+								<button class="btn-delete" onclick="fn_deleteComment('${bc.boardCommentNo}')">삭제하기</button>				
+							<%-- <%} %> --%>
+							</c:if>
 						</td>
 					</tr>	
-				<% } else{%>
+				</c:if>
+				<c:if test="${bc.boardCommentLevel == 2}">
+				<%-- <% } else{%> --%>
 					<tr class="level2">
 						<td>
-							<sub><%=bc.getBoardCommentWriter() %></sub>
-							<sub><%=bc.getBoardCommentDate() %></sub>
+							<sub>${bc.boardCommentWriter}</sub>
+							<sub>${bc.boardCommentDate}</sub>
 							<br>
-							<%=bc.getBoardCommentContent() %>
+							${bc.boardCommentContent}
 						</td>
 						<td>
-							<%if(loginMember!=null&&
+						<c:if test="${loginMember!=null &&(loginMember.userId eq 'admin' || loginMember.userId eq board.boardWriter) }">
+							<%-- <%if(loginMember!=null&&
 								(loginMember.getUserId().equals("admin")||
-								loginMember.getUserId().equals(bc.getBoardCommentWriter()))){ %>
-								<button class="btn-delete" onclick="fn_deleteComment('<%=bc.getBoardCommentNo()%>')">삭제하기</button>				
-							<%} %>
+								loginMember.getUserId().equals(bc.getBoardCommentWriter()))){ %> --%>
+								<button class="btn-delete" onclick="fn_deleteComment('${bc.boardCommentNo}')">삭제하기</button>				
+							<%-- <%} %> --%>
+							</c:if>
 						</td>
 					</tr>
-				<%}
-				}//for문
-				}%>
+				<%-- <%} --%>
+				<!-- //for문				
+				}%> -->
+						</c:if>
+					</c:forEach>
+				</c:if>
 		</table>
     </section>
     <script>
     	$(()=>{
     		$(".comment-editor>form>textarea").focus(e=>{
-    			if(<%=loginMember==null%>){
+    			if(${loginMember==null}){
     				alert("로그인 후 이용할 수 있습니다.");
     				$("#userId").focus();
     			}
@@ -161,9 +182,10 @@
     	const fn_deleteComment=(commentNo)=>{
     		const result=confirm("댓글을 삭제하시겠습니까?");
     		if(result==true){
-    			location.assign("<%=request.getContextPath()%>/board/commentDelete.do?boardNo=<%=b.getBoardNo()%>&commentNo="+commentNo);    			
+    			location.assign("${pageContext.request.contextPath}/board/commentDelete.do?boardNo=${board.boardNo}&commentNo="+commentNo);    			
     		}
     		
     	}
     </script>
-<%@ include file="/views/common/footer.jsp"%>
+<jsp:include page="/views/common/footer.jsp"/>
+<%-- <%@ include file="/views/common/footer.jsp"%> --%>

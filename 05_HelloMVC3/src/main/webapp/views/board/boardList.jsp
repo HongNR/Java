@@ -2,9 +2,9 @@
     pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ page import="java.util.List,com.web.board.model.vo.Board" %>
-<%
+<%-- <%
 	List<Board> boards=(List<Board>)request.getAttribute("boards");
-%>
+%> --%>
 <%@ include file="/views/common/header.jsp"%>
 <style>
 	section#board-container{width:600px; margin:0 auto; text-align:center;}
@@ -34,26 +34,31 @@
 			</c:if>
 			<c:if test="${not empty boards }">
 			<%-- <%}else %> --%>
-			<%{for(Board b: boards){%>
+			<c:forEach var="b" items="${boards }">
+			<%-- <%{for(Board b: boards){%> --%>
 				<tr>
-				<td><%=b.getBoardNo() %></td>
+				<td><c:out value="${b.boardNo }"/></td>
 				<td>
 					<!-- 타이틀을 누르면 상세화면으로 이동 -->
-					<a href="<%=request.getContextPath()%>/board/boardView.do?boardNo=<%=b.getBoardNo() %>"><%=b.getBoardTitle() %></a>
+					<a href="${pageContext.request.contextPath }/board/boardView.do?boardNo=<c:out value="${b.boardNo }"/>"><c:out value="${b.boardTitle }"/></a>
 				</td>
-				<td><%=b.getBoardWriter() %></td>
-				<td><%=b.getBoardDate() %></td>
+				<td><c:out value="${b.boardWriter }"/></td>
+				<td><c:out value="${b.boardDate }"/></td>
 				<td>
-					<%if(b.getBoardOriginalFilename()!=null) {%>
-						<img src="<%=request.getContextPath()%>/images/file.png" width="20">
-					<%}else {%>	
+					<c:if test="${b.boardOriginalFilename!=null }">
+					<%-- <%if(b.getBoardOriginalFilename()!=null) {%> --%>
+						<img src="${pageContext.request.contextPath }/images/file.png" width="20">
+					</c:if>
+					<c:if test="${b.boardOriginalFilename==null }">
+<%-- 					<%}else {%>	 --%>
 					첨부파일 없음
-					<%} 
-					%>
+					</c:if>
+<%-- 					<%}%> --%>
 				</td>
-				<td><%=b.getBoardReadcount() %></td>
+				<td><c:out value="${b.boardReadcount }"/></td>
 			</tr>
-			<% }%>
+			<%-- <% }%> --%>
+			</c:forEach>
 				<!-- }%> --> 
 			</c:if>
 		</table>
@@ -62,4 +67,5 @@
 			<%-- <%=request.getAttribute("pageBar") %> --%>
 		</div>
 	</section>
-<%@ include file="/views/common/footer.jsp"%>
+<jsp:include page="/views/common/footer.jsp"/>
+<%-- <%@ include file="/views/common/footer.jsp"%> --%>
